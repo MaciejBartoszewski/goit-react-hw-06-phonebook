@@ -1,130 +1,69 @@
-/* eslint-disable default-case */
-import React from 'react';
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { nanoid } from 'nanoid';
 import css from './ContactForm.module.css';
-import { useDispatch } from 'react-redux';
-import { addContact } from 'redux/action';
+import { useState } from 'react';
 
-
-export const ContactForm = ({ handleAddContact, contacts }) => {
-  const dispatch = useDispatch();
-
+export const ContactForm = ({ handleSubmit }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const changeHandler = event => {
-    switch (event.target.name) {
-      case 'name':
-        setName(event.target.value);
-        break;
-      case 'number':
-        setNumber(event.target.value);
-        break;
-    }
+  const handleChangeName = event => {
+    const value = event.target.value;
+    setName(value);
   };
 
-  const submitHandler = event => {
-    event.preventDefault();
-    const newContact = {
-      name: name,
-      number: number,
-    };
-    contacts.some(contact => contact.name === name)
-      ? alert(`${name} is already in contacts`)
-      : handleAddContact({ ...newContact });
+  const handleChangeNumber = event => {
+    const value = event.target.value;
+    setNumber(value);
+  };
 
+  const handleFormSubmit = event => {
+    event.preventDefault();
+    handleSubmit({ name: name, number: number });
     setName('');
     setNumber('');
-
-    dispatch(addContact(name, number));
   };
 
+  const loginNameId = nanoid();
+  const loginNumberId = nanoid();
+
+
   return (
-    <form onSubmit={submitHandler}>
-      <label>
-        Name
+    <div>
+      <form onSubmit={handleFormSubmit}>
+        <label htmlFor={loginNameId}>
+          Name
+        </label>
         <input
           className={css.input}
+          id={loginNameId}
+          onChange={handleChangeName}
+          value={name}
           type="text"
           name="name"
           pattern="^[A-Za-z.'\- ]+$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
-          value={name}
-          onChange={changeHandler}
+          placeholder="Enter name"
         />
-      </label>
-      <label>
-        Number
+
+        <label htmlFor={loginNumberId}>
+          {' '}
+          Number{' '}
+        </label>
         <input
           className={css.input}
+          id={loginNumberId}
+          onChange={handleChangeNumber}
+          value={number}
           type="tel"
           name="number"
-          pattern="^\+?\d{1,4}?\s?\(?\d{1,4}?\)?\s?\d{1,4}\s?\d{1,4}\s?\d{1,9}$"
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          value={number}
-          onChange={changeHandler}
+          placeholder="Enter number"
         />
-      </label>
-      <button className={css.btn}>Add contact</button>
-    </form>
+        <button className={css.btn}>Add contact</button>
+      </form>
+    </div>
   );
 };
-
-ContactForm.propTypes = {
-  addContact: PropTypes.func,
-  contacts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    name: PropTypes.string,
-    number: PropTypes.string,
-  })),
-  deleteContact: PropTypes.func
-};
-
-export default ContactForm;
-
-
-// export const ContactForm = ({ handleAddContact, contacts }) => {
-//   const dispatch = useDispatch();
-
-//   const [name, setName] = useState('');
-//   const [number, setNumber] = useState('');
-
-//   const changeHandler = event => {
-//     const { name, number } = event.target;
-//     switch (name) {
-//       case 'name':
-//         setName(name);
-//         break;
-//       case 'number':
-//         setNumber(number);
-//         break;
-//     }
-//   };
-
-//   function submitHandler(event) {
-//     event.preventDefault();
-//     const newContact = {
-//       name: name,
-//       number: number,
-//     };
-
-//     dispatch(addContact(newContact));
-
-//     setName('');
-//     setNumber('');
-//   }
-
-
-
-// ContactForm.propTypes = {
-//   contacts: PropTypes.arrayOf(PropTypes.shape({
-//     id: PropTypes.string,
-//     name: PropTypes.string,
-//     number: PropTypes.string,
-//   })),
-// };
-
-// export default ContactForm;

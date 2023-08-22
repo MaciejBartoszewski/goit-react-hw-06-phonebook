@@ -1,62 +1,30 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import css from '../ContactForm/ContactForm.module.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { getContacts } from 'redux/selector';
-import { deleteContact } from 'redux/action';
+import PropTypes from 'prop-types';
 
-export const ContactItem = ({ id, name, number, onDelete }) => {
-  const dispatch = useDispatch();
-  const handleDelete = () => {
-    dispatch(deleteContact(id));
-  };
-  return (
-    <>
+export const ContactList = ({ contacts, handleDelete }) => (
+  <ul>
+    {contacts.map((contact, id) => (
       <li key={id}>
-        <p>
-          {name}: {number}
-        </p>
-        <button className={css.btn} onClick={handleDelete}>Delete</button>
+        {contact.name} {contact.number}
+        <button
+          className={css.btn}
+          type="button"
+          onClick={() => handleDelete(contact.id)}
+        >
+          {' '}
+          Delete{' '}
+        </button>
       </li>
-    </>
-  );
-};
-
-ContactItem.propTypes = {
-  id: PropTypes.string,
-  name: PropTypes.string,
-  number: PropTypes.string,
-  onDelete: PropTypes.func,
-}
-
-export const ContactList = ({ handleDelete }) => {
-  const contacts = useSelector(getContacts);
-  return (
-    <>
-      <ul>
-        {contacts.map(contact => {
-          return (
-            <ContactItem
-              key={contact.id}
-              id={contact.id}
-              name={contact.name}
-              number={contact.number}
-              onDelete={handleDelete}
-            />
-          );
-        })}
-      </ul>
-    </>
-  );
-};
+    ))}
+  </ul>
+);
 
 ContactList.propTypes = {
-  handleDelete: PropTypes.func,
-  contacts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    name: PropTypes.string,
-    number: PropTypes.string,
-  }))
+  contacts: PropTypes.arrayOf(
+    PropTypes.exact({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
 };
-
-export default ContactList;
