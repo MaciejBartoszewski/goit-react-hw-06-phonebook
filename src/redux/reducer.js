@@ -1,6 +1,6 @@
 import {
   addContact,
-  delContact,
+  deleteContact,
   setFilter,
   updateContacts,
 } from '../redux/action';
@@ -16,7 +16,7 @@ export const contactsReducer = createReducer(initialState, builder => {
     .addCase(addContact, (state, action) => {
       state.items.push(action.payload);
     })
-    .addCase(delContact, (state, action) => {
+    .addCase(deleteContact, (state, action) => {
       const index = state.items.findIndex(
         contact => contact.id === action.payload
       );

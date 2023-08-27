@@ -5,7 +5,7 @@ import { ContactList } from './ContactList/ContactList';
 import { useEffect } from 'react';
 import { getContacts, getFilter } from '../redux/selector';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, delContact, updateContacts } from '../redux/action';
+import { addContact, deleteContact, updateContacts } from '../redux/action';
 
 export const App = () => {
   const contacts = useSelector(getContacts);
@@ -42,10 +42,10 @@ export const App = () => {
   };
 
   const handleDelete = e => {
-    dispatch(delContact(e));
+    dispatch(deleteContact(e));
   };
 
-  const getFilteredContacts = () => {
+  const handleContacts = () => {
     const filterContactsList = contacts.filter(contact => {
       return contact.name.toLowerCase().includes(filter.toLowerCase());
     });
@@ -59,7 +59,7 @@ export const App = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'start',
+        alignItems: 'center',
         marginLeft: 50,
         fontSize: 20,
         color: '#010101',
@@ -70,7 +70,7 @@ export const App = () => {
       <h2> Contacts </h2>
       <Filter />
       <ContactList
-        contacts={getFilteredContacts()}
+        contacts={handleContacts()}
         handleDelete={handleDelete}
       />
     </div>

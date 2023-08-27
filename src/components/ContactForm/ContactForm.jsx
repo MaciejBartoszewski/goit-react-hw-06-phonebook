@@ -6,37 +6,37 @@ export const ContactForm = ({ handleSubmit }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const handleChangeName = event => {
+  const onChangeName = event => {
     const value = event.target.value;
     setName(value);
   };
 
-  const handleChangeNumber = event => {
+  const onChangeNumber = event => {
     const value = event.target.value;
     setNumber(value);
   };
 
-  const handleFormSubmit = event => {
+  const onSubmit = event => {
     event.preventDefault();
     handleSubmit({ name: name, number: number });
     setName('');
     setNumber('');
   };
 
-  const loginNameId = nanoid();
-  const loginNumberId = nanoid();
+  const idName = nanoid();
+  const idNumber = nanoid();
 
 
   return (
     <div>
-      <form onSubmit={handleFormSubmit}>
-        <label htmlFor={loginNameId}>
+      <form onSubmit={onSubmit}>
+        <label htmlFor={idName}>
           Name
         </label>
         <input
           className={css.input}
-          id={loginNameId}
-          onChange={handleChangeName}
+          id={idName}
+          onChange={onChangeName}
           value={name}
           type="text"
           name="name"
@@ -46,14 +46,14 @@ export const ContactForm = ({ handleSubmit }) => {
           placeholder="Enter name"
         />
 
-        <label htmlFor={loginNumberId}>
+        <label htmlFor={idNumber}>
           {' '}
           Number{' '}
         </label>
         <input
           className={css.input}
-          id={loginNumberId}
-          onChange={handleChangeNumber}
+          id={idNumber}
+          onChange={onChangeNumber}
           value={number}
           type="tel"
           name="number"
